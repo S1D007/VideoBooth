@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import ReactPlayer from "react-player";
+import QRCode from "react-qr-code";
 
 export default function Page() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -40,11 +41,7 @@ export default function Page() {
       const QRString = `${currentHostname}/download/${encodeURIComponent(
         data.data
       )}`;
-      alert("QR Code Generated. Click OK to download the QR Code.");
-      console.log(QRString);
-      setQR(
-        `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${QRString}`
-      );
+      setQR(QRString);
     } catch (error) {
       console.error(error);
     } finally {
@@ -124,7 +121,7 @@ export default function Page() {
               Code Generated
             </h1>
             <div className="w-full flex flex-col items-center justify-center space-y-2">
-              <img src={qr} className="w-52 h-52" />
+              <QRCode value={qr} size={256} />
               <button
                 onClick={() => {
                   setQR(null);

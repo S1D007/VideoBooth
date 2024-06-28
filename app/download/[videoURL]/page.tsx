@@ -22,19 +22,25 @@ export default function page({ params }: { params: { videoURL: string } }) {
             />
           </div>
           <button
-            onClick={() => {
+            onClick={async () => {
               setLoading(true);
-              fetch(decodeURIComponent(params.videoURL)).then((response) => {
-                response.blob().then((blob) => {
-                  const url = window.URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = "video.mp4";
-                  a.click();
-                });
-              });
-              setLoading(false);
+              try {
+                const response = await fetch(
+                  decodeURIComponent(params.videoURL)
+                );
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "video.mp4";
+                a.click();
+              } catch (error) {
+                console.error("Error downloading the video:", error);
+              } finally {
+                setLoading(false);
+              }
             }}
+            disabled={loading}
             className="absolute bottom-4 right-4 bg-gray-900 text-white font-semibold px-4 py-2 rounded-lg"
           >
             {loading ? "Downloading..." : "Download"}
