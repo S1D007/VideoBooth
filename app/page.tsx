@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import ReactPlayer from "react-player";
 import QRCode from "react-qr-code";
 
@@ -26,7 +25,7 @@ export default function Page() {
       return;
     }
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file);
     setLoading(true);
     try {
       const response = await fetch(
